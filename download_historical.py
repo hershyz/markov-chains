@@ -52,4 +52,4 @@ data = yf.download(tickers, start=start_date, end=end_date, group_by='ticker')
 close_data = data.xs('Close', level=1, axis=1)
 
 # save to csv
-close_data.to_csv('tech_stock_close_data.csv')
+close_data.to_csv('historical.csv')
