@@ -23,8 +23,7 @@ tickers = [
     'UBER',
     'PANW',
     'PLTR',
-    'KLA',
-    'CDNS',
+    'KLAC',
     'CRWD',
     'ABNB',
     'FTNT',
@@ -41,3 +40,16 @@ tickers = [
     'LYFT',
     'SNOW',
 ]
+
+# get timestamps for 3 years ago -> now
+end_date = datetime.datetime.now()
+start_date = end_date - datetime.timedelta(days=3*365)
+
+# fetch data for all tickers
+data = yf.download(tickers, start=start_date, end=end_date, group_by='ticker')
+
+# filter to only get close prices
+close_data = data.xs('Close', level=1, axis=1)
+
+# save to csv
+close_data.to_csv('tech_stock_close_data.csv')
