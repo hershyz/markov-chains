@@ -15,7 +15,7 @@ public:
     vector<string> asset_list;
 
     // price matrix (price_mat[asset index][day])
-    vector<vector<int> > price_mat;
+    vector<vector<double> > price_mat;
 
     // parse historical csv
     void parse(string csv_path) {

@@ -39,6 +39,9 @@ tickers = [
     'DDOG',
     'LYFT',
     'SNOW',
+    'OKTA',
+    'PYPL',
+    'TSM'
 ]
 
 # get timestamps for 3 years ago -> now
