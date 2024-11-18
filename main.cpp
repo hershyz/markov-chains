@@ -11,6 +11,8 @@ int day_interval = 5;                               // size of interval for whic
 
 int main() {
     
+    // initialize and build markov chain
     Chain chain;
     chain.parse(csv_path);
+    chain.build(day_interval, positive_momentum_threshold, negative_momentum_threshold);
 }
