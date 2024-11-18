@@ -12,9 +12,20 @@ enum Momentum {
 
 // summary struct between two assets
 struct Summary {
-    double positive_proportion;
-    double neutral_proportion;
-    double negative_proportion;
+
+    int positive_positive;
+    int positive_neutral;
+    int positive_negative;
+    int neutral_positive;
+    int neutral_neutral;
+    int neutral_negative;
+    int negative_positive;
+    int negative_neutral;
+    int negative_negative;
+
+    Summary() : positive_positive(0), positive_neutral(0), positive_negative(0),
+                neutral_positive(0), neutral_neutral(0), neutral_negative(0),
+                negative_positive(0), negative_neutral(0), negative_negative(0) {}
 };
 
 // organization for markov chain
@@ -90,10 +101,38 @@ public:
             r += day_interval;
         }
 
-        for (int i = 0; i < asset_list.size(); i++) {
-            cout << chain[i].size() << endl;
-        }
-
         //construct condensed transition matrix representing the whole chain
+        transition_mat.resize(asset_list.size(), vector<Summary>(asset_list.size()));
+        for (int interval_index = 0; interval_index < chain[0].size() - 1; interval_index++) {
+            for (int asset_index_a = 0; asset_index_a < asset_list.size(); asset_index_a++) {
+                for (int asset_index_b = 0; asset_index_b < asset_list.size(); asset_index_b++) {
+
+                    Momentum asset_a_state = chain[asset_index_a][interval_index];
+                    Momentum asset_b_state = chain[asset_index_b][interval_index + 1];
+
+                    cout << asset_a_state << " " << asset_b_state << endl;
+
+                    if (asset_a_state == POSITIVE && asset_b_state == POSITIVE) {
+                        transition_mat[asset_index_a][asset_index_b].positive_positive++;
+                    } else if (asset_a_state == POSITIVE && asset_b_state == NEUTRAL) {
+                        transition_mat[asset_index_a][asset_index_b].positive_neutral++;
+                    } else if (asset_a_state == POSITIVE && asset_b_state == NEGATIVE) {
+                        transition_mat[asset_index_a][asset_index_b].positive_negative++;
+                    } else if (asset_a_state == NEUTRAL && asset_b_state == POSITIVE) {
+                        transition_mat[asset_index_a][asset_index_b].neutral_positive++;
+                    } else if (asset_a_state == NEUTRAL && asset_b_state == NEUTRAL) {
+                        transition_mat[asset_index_a][asset_index_b].neutral_neutral++;
+                    } else if (asset_a_state == NEUTRAL && asset_b_state == NEGATIVE) {
+                        transition_mat[asset_index_a][asset_index_b].neutral_negative++;
+                    } else if (asset_a_state == NEGATIVE && asset_b_state == POSITIVE) {
+                        transition_mat[asset_index_a][asset_index_b].negative_positive++;
+                    } else if (asset_a_state == NEGATIVE && asset_b_state == NEUTRAL) {
+                        transition_mat[asset_index_a][asset_index_b].negative_neutral++;
+                    } else if (asset_a_state == NEGATIVE && asset_b_state == NEGATIVE) {
+                        transition_mat[asset_index_a][asset_index_b].negative_negative++;
+                    }
+                }
+            }
+        }
     }
 };
